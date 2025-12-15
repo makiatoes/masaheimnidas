@@ -1,0 +1,301 @@
+/* Masaheimnida - Spa-inspired Design System */
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
+
+* {
+    font-family: 'Poppins', sans-serif;
+}
+
+body {
+    background-color: #f8f6f4;
+    color: #3d3d3d;
+}
+
+/* Navbar Styling */
+.navbar {
+    background: linear-gradient(135deg, #8b7355 0%, #6b5d4f 100%) !important;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+    padding: 1rem 0;
+}
+
+.navbar-brand {
+    font-weight: 600;
+    font-size: 1.3rem;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.navbar-brand img {
+    height: 40px;
+    width: auto;
+}
+
+.nav-link {
+    font-weight: 500;
+    transition: all 0.3s ease;
+    margin: 0 5px;
+}
+
+.nav-link:hover {
+    color: #f4e8d8 !important;
+    transform: translateY(-2px);
+}
+
+.nav-link.active {
+    color: #f4e8d8 !important;
+    font-weight: 600;
+}
+
+/* Card Styling */
+.card {
+    border: none;
+    border-radius: 15px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.08);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    overflow: hidden;
+}
+
+.card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 25px rgba(0,0,0,0.12);
+}
+
+.card-body {
+    padding: 1.5rem;
+}
+
+.card-header {
+    background: linear-gradient(135deg, #8b7355 0%, #6b5d4f 100%);
+    color: white;
+    border: none;
+    padding: 1rem 1.5rem;
+    font-weight: 600;
+}
+
+/* Stats Cards */
+.stats-card {
+    border-radius: 15px;
+    overflow: hidden;
+    transition: all 0.3s ease;
+}
+
+.stats-card.bg-primary {
+    background: linear-gradient(135deg, #7a9e7e 0%, #5d7a60 100%) !important;
+}
+
+.stats-card.bg-warning {
+    background: linear-gradient(135deg, #d4a574 0%, #b8935f 100%) !important;
+}
+
+.stats-card.bg-success {
+    background: linear-gradient(135deg, #8b9a7a 0%, #6d7a5d 100%) !important;
+}
+
+.stats-card.bg-info {
+    background: linear-gradient(135deg, #9a8b7a 0%, #7a6d5d 100%) !important;
+}
+
+.stats-card.bg-danger {
+    background: linear-gradient(135deg, #a67c7a 0%, #8a5d5a 100%) !important;
+}
+
+/* Typography */
+h1, h2, h3, h4, h5, h6 {
+    font-weight: 600;
+    color: #5d4e3d;
+}
+
+h2 {
+    font-weight: 600;
+    color: #5d4e3d;
+}
+
+/* Table Styling */
+.table {
+    border-radius: 10px;
+    overflow: hidden;
+}
+
+.table thead {
+    background: linear-gradient(135deg, #8b7355 0%, #6b5d4f 100%);
+    color: white;
+}
+
+.table thead th {
+    border: none;
+    font-weight: 600;
+    padding: 1rem;
+}
+
+.table tbody tr {
+    transition: background-color 0.2s ease;
+}
+
+.table tbody tr:hover {
+    background-color: #f8f6f4;
+}
+
+/* Badge Styling */
+.badge {
+    padding: 0.5em 0.8em;
+    font-weight: 500;
+    border-radius: 8px;
+}
+
+/* Button Styling */
+.btn {
+    border-radius: 8px;
+    font-weight: 500;
+    padding: 0.5rem 1.2rem;
+    transition: all 0.3s ease;
+}
+
+.btn-primary {
+    background: linear-gradient(135deg, #8b7355 0%, #6b5d4f 100%);
+    border: none;
+}
+
+.btn-primary:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(139, 115, 85, 0.4);
+    background: linear-gradient(135deg, #9b8365 0%, #7b6d5f 100%);
+}
+
+.btn-success {
+    background: linear-gradient(135deg, #8b9a7a 0%, #6d7a5d 100%);
+    border: none;
+}
+
+.btn-success:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(139, 154, 122, 0.4);
+}
+
+.btn-danger {
+    background: linear-gradient(135deg, #a67c7a 0%, #8a5d5a 100%);
+    border: none;
+}
+
+.btn-danger:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(166, 124, 122, 0.4);
+}
+
+/* Form Styling */
+.form-control, .form-select {
+    border-radius: 8px;
+    border: 1px solid #ddd;
+    padding: 0.6rem 1rem;
+    transition: all 0.3s ease;
+}
+
+.form-control:focus, .form-select:focus {
+    border-color: #8b7355;
+    box-shadow: 0 0 0 0.2rem rgba(139, 115, 85, 0.25);
+}
+
+/* Input Group */
+.input-group .form-control {
+    border-radius: 8px 0 0 8px;
+}
+
+.input-group .btn {
+    border-radius: 0 8px 8px 0;
+}
+
+/* Alert Styling */
+.alert {
+    border-radius: 10px;
+    border: none;
+}
+
+/* Modal Styling */
+.modal-content {
+    border-radius: 15px;
+    border: none;
+}
+
+.modal-header {
+    background: linear-gradient(135deg, #8b7355 0%, #6b5d4f 100%);
+    color: white;
+    border-radius: 15px 15px 0 0;
+}
+
+.modal-header .btn-close {
+    filter: invert(1);
+}
+
+/* Text Colors */
+.text-primary {
+    color: #8b7355 !important;
+}
+
+.text-muted {
+    color: #6c757d !important;
+}
+
+/* Background Colors */
+.bg-light {
+    background-color: #f8f6f4 !important;
+}
+
+/* Mobile Grid Cards for Services */
+@media (max-width: 767.98px) {
+    #servicesGridBody .card {
+        margin-bottom: 0;
+    }
+    
+    #servicesGridBody .card-body {
+        padding: 1rem;
+    }
+    
+    #paginationNavMobile .pagination {
+        justify-content: center;
+        flex-wrap: wrap;
+    }
+    
+    #paginationNavMobile .page-link {
+        padding: 0.375rem 0.5rem;
+        font-size: 0.875rem;
+    }
+}
+
+/* Mobile Grid Cards for Users */
+@media (max-width: 767.98px) {
+    #usersGridBody .card {
+        margin-bottom: 0;
+    }
+    
+    #usersGridBody .card-body {
+        padding: 1rem;
+    }
+    
+    #usersGridBody .card-title {
+        font-size: 1.1rem;
+        margin-bottom: 0.5rem;
+    }
+    
+    #usersGridBody hr {
+        margin: 0.5rem 0;
+    }
+}
+
+/* Mobile Grid Cards for Bookings */
+@media (max-width: 767.98px) {
+    #bookingsGridBody .card {
+        margin-bottom: 0;
+    }
+    
+    #bookingsGridBody .card-body {
+        padding: 1rem;
+    }
+    
+    #bookingsGridBody .card-title {
+        font-size: 1.1rem;
+        margin-bottom: 0.5rem;
+    }
+    
+    #bookingsGridBody hr {
+        margin: 0.5rem 0;
+    }
+}

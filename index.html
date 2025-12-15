@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Masaheimnida - Booking System</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css">
+    <link rel="stylesheet" href="css/style.css">
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg navbar-dark">
+        <div class="container">
+            <a class="navbar-brand" href="index.html">
+                <img src="https://masaheimnida.others.ccs4thyear.com/storage/defaults/masaheimnida.png" alt="Masaheimnida" style="height: 40px; width: auto;" onerror="this.style.display='none'; this.nextElementSibling.style.display='inline-block';">
+                <span style="display:none; font-weight: 600;">Masaheimnida</span>
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item"><a class="nav-link active" href="index.html">Home</a></li>
+                    <li class="nav-item"><a class="nav-link" href="login.html">Login</a></li>
+                    <li class="nav-item"><a class="nav-link" href="register.html">Register</a></li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container my-5">
+        <div class="row">
+            <div class="col-12 text-center mb-5">
+                <h1 class="display-4 fw-bold text-primary mb-3">Masaheimnida</h1>
+                <p class="lead text-muted">Professional Massage Therapy Booking System</p>
+            </div>
+        </div>
+
+        <div id="loginPrompt" class="row justify-content-center">
+            <div class="col-md-8">
+                <div class="card shadow">
+                    <div class="card-body p-5 text-center">
+                        <i class="bi bi-box-arrow-in-right fs-1 text-primary mb-3"></i>
+                        <h3 class="mb-3">Welcome to Masaheimnida</h3>
+                        <p class="text-muted mb-4">Please login to access your dashboard</p>
+                        <a href="login.html" class="btn btn-primary btn-lg">Go to Login</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div id="redirectingMessage" class="row justify-content-center" style="display: none;">
+            <div class="col-md-8">
+                <div class="card shadow">
+                    <div class="card-body p-5 text-center">
+                        <div class="spinner-border text-primary mb-3" role="status">
+                            <span class="visually-hidden">Loading...</span>
+                        </div>
+                        <h5>Redirecting to your dashboard...</h5>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="js/auth.js"></script>
+    <script>
+        $(document).ready(function() {
+            const user = getCurrentUser();
+            
+            if (user && isAuthenticated()) {
+                // Redirect based on user type
+                $('#loginPrompt').hide();
+                $('#redirectingMessage').show();
+                
+                setTimeout(function() {
+                    const userType = user.user_type;
+                    
+                    if (userType === 'admin') {
+                        window.location.href = 'admin-dashboard.html';
+                    } else if (userType === 'therapist') {
+                        window.location.href = 'therapist-dashboard.html';
+                    } else if (userType === 'client') {
+                        window.location.href = 'client-dashboard.html';
+                    } else {
+                        // Default to login if user type is unknown
+                        window.location.href = 'login.html';
+                    }
+                }, 1000);
+            } else {
+                $('#loginPrompt').show();
+                $('#redirectingMessage').hide();
+            }
+        });
+    </script>
+</body>
+</html>

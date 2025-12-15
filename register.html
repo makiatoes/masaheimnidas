@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Register - Masaheimnida</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css">
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg navbar-dark">
+        <div class="container">
+            <a class="navbar-brand" href="index.html">
+                <img src="https://masaheimnida.others.ccs4thyear.com/storage/defaults/masaheimnida.png" alt="Masaheimnida" style="height: 40px; width: auto;" onerror="this.style.display='none'; this.nextElementSibling.style.display='inline-block';">
+                <span style="display:none; font-weight: 600;">Masaheimnida</span>
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item"><a class="nav-link" href="index.html">Home</a></li>
+                    <li class="nav-item"><a class="nav-link" href="login.html">Login</a></li>
+                    <li class="nav-item"><a class="nav-link active" href="register.html">Register</a></li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container my-5 d-flex flex-column align-items-center">
+        <div class="mb-4 text-center">
+            <h1 class="display-4 fw-bold text-primary">Masaheimnida</h1>
+            <p class="text-muted">Booking System</p>
+        </div>
+        <div class="card shadow" style="width: 100%; max-width: 500px;">
+            <div class="card-body p-4">
+                <h3 class="card-title text-center mb-4">Register</h3>
+                <div id="errorMessage" class="alert alert-danger d-none" role="alert"></div>
+                <div id="successMessage" class="alert alert-success d-none" role="alert"></div>
+                <form id="registerForm">
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label for="firstname" class="form-label">First Name</label>
+                            <input type="text" class="form-control" id="firstname" name="firstname" required maxlength="50">
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label for="lastname" class="form-label">Last Name</label>
+                            <input type="text" class="form-control" id="lastname" name="lastname" required maxlength="50">
+                        </div>
+                    </div>
+                    <div class="mb-3">
+                        <label for="username" class="form-label">Username</label>
+                        <input type="text" class="form-control" id="username" name="username" required maxlength="50">
+                        <small class="form-text text-muted">Must be unique</small>
+                    </div>
+                    <div class="mb-3">
+                        <label for="email" class="form-label">Email</label>
+                        <input type="email" class="form-control" id="email" name="email" required maxlength="100">
+                    </div>
+                    <div class="mb-3">
+                        <label for="phone" class="form-label">Phone</label>
+                        <input type="text" class="form-control" id="phone" name="phone" required maxlength="11" pattern="[0-9]{11}">
+                        <small class="form-text text-muted">11 digits only</small>
+                    </div>
+                    <div class="mb-3">
+                        <label for="password" class="form-label">Password</label>
+                        <div class="input-group">
+                            <input type="password" class="form-control" id="password" name="password" required minlength="8">
+                            <button class="btn btn-outline-secondary" type="button" id="togglePassword">
+                                <i class="bi bi-eye"></i>
+                            </button>
+                        </div>
+                        <small class="form-text text-muted">Must be at least 8 characters</small>
+                    </div>
+                    <div class="mb-3">
+                        <label for="password_confirmation" class="form-label">Confirm Password</label>
+                        <div class="input-group">
+                            <input type="password" class="form-control" id="password_confirmation" name="password_confirmation" required>
+                            <button class="btn btn-outline-secondary" type="button" id="togglePasswordConfirm">
+                                <i class="bi bi-eye"></i>
+                            </button>
+                        </div>
+                    </div>
+                    <button type="submit" class="btn btn-primary w-100 mb-3">Register</button>
+                </form>
+                <div class="text-center mt-3">
+                    <a href="login.html" class="text-decoration-none">Already have an account? Login</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        $(document).ready(function() {
+            // Toggle password visibility
+            $('#togglePassword').on('click', function() {
+                const passwordInput = $('#password');
+                const icon = $(this).find('i');
+                
+                if (passwordInput.attr('type') === 'password') {
+                    passwordInput.attr('type', 'text');
+                    icon.removeClass('bi-eye').addClass('bi-eye-slash');
+                } else {
+                    passwordInput.attr('type', 'password');
+                    icon.removeClass('bi-eye-slash').addClass('bi-eye');
+                }
+            });
+
+            $('#togglePasswordConfirm').on('click', function() {
+                const passwordInput = $('#password_confirmation');
+                const icon = $(this).find('i');
+                
+                if (passwordInput.attr('type') === 'password') {
+                    passwordInput.attr('type', 'text');
+                    icon.removeClass('bi-eye').addClass('bi-eye-slash');
+                } else {
+                    passwordInput.attr('type', 'password');
+                    icon.removeClass('bi-eye-slash').addClass('bi-eye');
+                }
+            });
+
+            // Phone number formatting (only numbers, max 11 digits)
+            $('#phone').on('input', function() {
+                this.value = this.value.replace(/[^0-9]/g, '').slice(0, 11);
+            });
+            
+            // Password confirmation validation
+            $('#password_confirmation').on('keyup', function() {
+                const password = $('#password').val();
+                const confirmPassword = $(this).val();
+                
+                if (password !== confirmPassword) {
+                    $(this).get(0).setCustomValidity('Passwords do not match');
+                } else {
+                    $(this).get(0).setCustomValidity('');
+                }
+            });
+            
+            $('#registerForm').on('submit', function(e) {
+                e.preventDefault();
+                
+                const firstname = $('#firstname').val();
+                const lastname = $('#lastname').val();
+                const username = $('#username').val();
+                const email = $('#email').val();
+                const phone = $('#phone').val();
+                const password = $('#password').val();
+                const password_confirmation = $('#password_confirmation').val();
+                
+                // Clear previous messages
+                $('#errorMessage').addClass('d-none').text('');
+                $('#successMessage').addClass('d-none').text('');
+                
+                // Validate passwords match
+                if (password !== password_confirmation) {
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Validation Error',
+                        text: 'Passwords do not match'
+                    });
+                    return;
+                }
+                
+                // Validate phone (11 digits)
+                if (!/^[0-9]{11}$/.test(phone)) {
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Validation Error',
+                        text: 'Phone must be exactly 11 digits'
+                    });
+                    return;
+                }
+                
+                // Show loading state
+                const submitBtn = $(this).find('button[type="submit"]');
+                const originalText = submitBtn.html();
+                submitBtn.prop('disabled', true).html('<span class="spinner-border spinner-border-sm me-2"></span>Registering...');
+                
+                axios.post(`${API_BASE_URL}/api/auth/register`, {
+                    firstname: firstname,
+                    lastname: lastname,
+                    username: username,
+                    email: email,
+                    phone: phone,
+                    password: password,
+                    password_confirmation: password_confirmation,
+                    user_type: 'client'
+                })
+                .then(function(response) {
+                    if (response.data && response.data.success) {
+                        const successMsg = response.data.message || 'Registration successful! Please check your email for OTP verification.';
+                        
+                        // Store email for OTP verification
+                        localStorage.setItem('pendingEmail', email);
+                        
+                        // Show success with SweetAlert
+                        Swal.fire({
+                            icon: 'success',
+                            title: 'Registration Successful!',
+                            html: successMsg + '<br><br><small>Redirecting to OTP verification page...</small>',
+                            timer: 3000,
+                            showConfirmButton: true,
+                            confirmButtonText: 'Go to Verification',
+                            allowOutsideClick: false
+                        }).then((result) => {
+                            if (result.isConfirmed || result.dismiss === Swal.DismissReason.timer) {
+                                window.location.href = 'verify-otp.html';
+                            }
+                        });
+                    } else {
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Registration Failed',
+                            text: 'Registration failed. Please try again.'
+                        });
+                    }
+                })
+                .catch(function(error) {
+                    let errorMsg = 'An error occurred. Please try again.';
+                    
+                    if (error.response) {
+                        if (error.response.data.message) {
+                            errorMsg = error.response.data.message;
+                        } else if (error.response.data.errors) {
+                            const errors = error.response.data.errors;
+                            const errorList = Object.values(errors).flat().join(', ');
+                            errorMsg = errorList;
+                        }
+                    } else if (error.request) {
+                        errorMsg = 'Network error. Please check your connection.';
+                    }
+                    
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Registration Failed',
+                        text: errorMsg
+                    });
+                })
+                .finally(function() {
+                    submitBtn.prop('disabled', false).html(originalText);
+                });
+            });
+        });
+    </script>
+    <script src="js/auth.js"></script>
+</body>
+</html>

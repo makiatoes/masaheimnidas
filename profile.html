@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Edit Profile - Masaheimnida</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css">
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg navbar-dark">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="#" id="dashboardLink">
+                <img src="https://masaheimnida.others.ccs4thyear.com/storage/defaults/masaheimnida.png" alt="Masaheimnida" style="height: 40px; width: auto;" onerror="this.style.display='none'; this.nextElementSibling.style.display='inline-block';">
+                <span style="display:none; font-weight: 600;">Masaheimnida</span>
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto" id="navbarMenu">
+                    <!-- Navbar items will be dynamically populated based on user type -->
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container mt-4">
+        <div class="row justify-content-center">
+            <div class="col-md-8">
+                <h2 class="mb-4">Edit Profile</h2>
+                <div class="card">
+                    <div class="card-body">
+                        <form id="profileForm">
+                            <div class="mb-4 text-center">
+                                <div class="mb-3">
+                                    <img id="profilePicture" src="" alt="Profile Picture" class="rounded-circle border border-3 border-primary mx-auto d-block" style="width: 150px; height: 150px; object-fit: cover; background-color: #e9ecef;">
+                                </div>
+                                <div>
+                                    <label for="profile_picture" class="btn btn-outline-primary">
+                                        <i class="bi bi-camera"></i> Change Profile Picture
+                                    </label>
+                                    <input type="file" class="d-none" id="profile_picture" accept="image/*">
+                                    <div id="fileName" class="mt-2 small text-muted"></div>
+                                    <small class="text-muted d-block mt-1">Leave blank to keep current picture</small>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-6 mb-3">
+                                    <label class="form-label">First Name</label>
+                                    <input type="text" class="form-control" id="firstname" required>
+                                </div>
+                                <div class="col-md-6 mb-3">
+                                    <label class="form-label">Last Name</label>
+                                    <input type="text" class="form-control" id="lastname" required>
+                                </div>
+                            </div>
+                            <div class="mb-3">
+                                <label class="form-label">Username</label>
+                                <input type="text" class="form-control" id="username" required>
+                            </div>
+                            <div class="mb-3">
+                                <label class="form-label">Email</label>
+                                <input type="email" class="form-control" id="email" readonly style="background-color: #e9ecef; cursor: not-allowed;">
+                                <small class="text-muted">Email cannot be changed</small>
+                            </div>
+                            <div class="mb-3">
+                                <label class="form-label">Phone</label>
+                                <input type="text" class="form-control" id="phone" maxlength="11" required>
+                            </div>
+                            <div class="mb-3">
+                                <label class="form-label">New Password</label>
+                                <input type="password" class="form-control" id="password">
+                                <small class="text-muted">Leave blank to keep current password</small>
+                            </div>
+                            <div id="errorMessage" class="alert alert-danger d-none"></div>
+                            <div id="successMessage" class="alert alert-success d-none"></div>
+                            <button type="submit" class="btn btn-primary">Update Profile</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="js/auth.js"></script>
+    <script src="js/profile.js"></script>
+</body>
+</html>
+
