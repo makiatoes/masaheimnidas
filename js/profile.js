@@ -149,19 +149,24 @@ function loadProfile() {
                 
                 const $img = $('#profilePicture');
                 
-                // Use default image if no profile picture is set
-                let imagePath = user.profile_picture;
-                if (!imagePath || imagePath === 'defaults/profile-default.svg') {
-                    imagePath = 'defaults/profile-default.svg';
+                // Use profile_picture_url if available (from backend), otherwise construct it
+                let imageUrl;
+                if (user.profile_picture_url) {
+                    imageUrl = user.profile_picture_url + '?t=' + Date.now();
+                } else {
+                    let imagePath = user.profile_picture;
+                    if (!imagePath || imagePath === 'defaults/profile-default.svg') {
+                        imagePath = 'defaults/profile-default.svg';
+                    }
+                    // Construct image URL - ensure no double slashes
+                    if (imagePath.startsWith('/')) {
+                        imagePath = imagePath.substring(1);
+                    }
+                    imageUrl = `${API_BASE_URL}/storage/${imagePath}?t=${Date.now()}`;
                 }
-                
-                // Construct image URL - ensure no double slashes
-                if (imagePath.startsWith('/')) {
-                    imagePath = imagePath.substring(1);
-                }
-                const imageUrl = `${API_BASE_URL}/storage/${imagePath}?t=${Date.now()}`;
                 console.log('Loading profile picture:', imageUrl);
                 console.log('Profile picture path from DB:', user.profile_picture);
+                console.log('Profile picture URL from backend:', user.profile_picture_url);
                 
                 // Remove previous handlers
                 $img.off('error load');
@@ -296,19 +301,24 @@ function updateProfile() {
                 
                 const $img = $('#profilePicture');
                 
-                // Use default image if no profile picture is set
-                let imagePath = updatedUser.profile_picture;
-                if (!imagePath || imagePath === 'defaults/profile-default.svg') {
-                    imagePath = 'defaults/profile-default.svg';
+                // Use profile_picture_url if available (from backend), otherwise construct it
+                let imageUrl;
+                if (updatedUser.profile_picture_url) {
+                    imageUrl = updatedUser.profile_picture_url + '?t=' + Date.now();
+                } else {
+                    let imagePath = updatedUser.profile_picture;
+                    if (!imagePath || imagePath === 'defaults/profile-default.svg') {
+                        imagePath = 'defaults/profile-default.svg';
+                    }
+                    // Construct image URL - ensure no double slashes
+                    if (imagePath.startsWith('/')) {
+                        imagePath = imagePath.substring(1);
+                    }
+                    imageUrl = `${API_BASE_URL}/storage/${imagePath}?t=${Date.now()}`;
                 }
-                
-                // Construct image URL - ensure no double slashes
-                if (imagePath.startsWith('/')) {
-                    imagePath = imagePath.substring(1);
-                }
-                const imageUrl = `${API_BASE_URL}/storage/${imagePath}?t=${Date.now()}`;
                 console.log('Loading updated profile picture from:', imageUrl);
                 console.log('Profile picture path from server:', updatedUser.profile_picture);
+                console.log('Profile picture URL from server:', updatedUser.profile_picture_url);
                 
                 // Remove previous handlers
                 $img.off('error load');
