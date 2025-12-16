@@ -133,9 +133,12 @@
                             <script>
                                 // Set min date immediately when this input is rendered (runs inline)
                                 (function() {
-                                    const tomorrow = new Date();
-                                    tomorrow.setDate(tomorrow.getDate() + 1);
-                                    const tomorrowStr = tomorrow.toISOString().split('T')[0];
+                                    // Compute "tomorrow" in UTC+8 (not browser-local, not raw UTC).
+                                    const UTC8_OFFSET_MS = 8 * 60 * 60 * 1000;
+                                    const ONE_DAY_MS = 24 * 60 * 60 * 1000;
+                                    const tomorrowStr = new Date(Date.now() + UTC8_OFFSET_MS + ONE_DAY_MS)
+                                        .toISOString()
+                                        .split('T')[0];
                                     const dateInput = document.getElementById('booking_date');
                                     if (dateInput) {
                                         dateInput.setAttribute('min', tomorrowStr);
