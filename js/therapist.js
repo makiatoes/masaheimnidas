@@ -53,7 +53,9 @@ $(document).ready(function() {
 function loadTherapistDashboardStats() {
     if ($('#todayAppointments').length === 0) return; // Only run on dashboard page
     
-    const today = new Date().toISOString().split('T')[0];
+    // Compute "today" as a UTC+8 calendar date (matches backend APP_TIMEZONE=Asia/Manila).
+    const UTC8_OFFSET_MS = 8 * 60 * 60 * 1000;
+    const today = new Date(Date.now() + UTC8_OFFSET_MS).toISOString().split('T')[0];
     
     // Load today's appointments
     axios.get(`${API_BASE_URL}/api/bookings?date_from=${today}&date_to=${today}&per_page=1`)
