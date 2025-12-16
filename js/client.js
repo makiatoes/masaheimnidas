@@ -138,16 +138,20 @@ $(document).ready(function() {
         loadClientServices();
         loadTherapists();
         
-        // Set minimum date to tomorrow (disable today)
-        function getTomorrowDate() {
-            const tomorrow = new Date();
-            tomorrow.setDate(tomorrow.getDate() + 1);
-            return tomorrow.toISOString().split('T')[0];
+        // Treat "today/tomorrow" as UTC+8 calendar dates (matches backend APP_TIMEZONE=Asia/Manila).
+        const UTC8_OFFSET_MS = 8 * 60 * 60 * 1000;
+        const ONE_DAY_MS = 24 * 60 * 60 * 1000;
+
+        function dateStringUTC8(epochMs = Date.now()) {
+            return new Date(epochMs + UTC8_OFFSET_MS).toISOString().split('T')[0];
+        }
+
+        function getTodayDateUTC8() {
+            return dateStringUTC8();
         }
         
-        function getTodayDate() {
-            const today = new Date();
-            return today.toISOString().split('T')[0];
+        function getTomorrowDateUTC8() {
+            return dateStringUTC8(Date.now() + ONE_DAY_MS);
         }
         
         // Get date input element (declare once)
@@ -160,20 +164,10 @@ $(document).ready(function() {
                 return true; // Allow empty date
             }
             
-            // Calculate dates fresh every time for accuracy
-            const now = new Date();
-            const today = new Date(now.getFullYear(), now.getMonth(), now.getDate());
-            const tomorrow = new Date(today);
-            tomorrow.setDate(tomorrow.getDate() + 1);
+            const tomorrowStr = getTomorrowDateUTC8();
             
-            const todayStr = today.toISOString().split('T')[0];
-            const tomorrowStr = tomorrow.toISOString().split('T')[0];
-            
-            // Parse selected date for comparison
-            const selectedDateObj = new Date(selectedDate + 'T00:00:00');
-            
-            // Strict validation: reject today or any past date
-            if (selectedDate === todayStr || selectedDate < tomorrowStr || selectedDateObj <= today) {
+            // Strict validation (UTC+8): reject today or any past date
+            if (selectedDate < tomorrowStr) {
                 if (dateInput) {
                     dateInput.value = ''; // Clear using native method
                     $('#booking_date').val(''); // Also clear using jQuery
@@ -202,7 +196,7 @@ $(document).ready(function() {
         
         // Set minimum date to tomorrow immediately (this disables today and all past dates)
         const setMinDate = function() {
-            const tomorrowStr = getTomorrowDate();
+            const tomorrowStr = getTomorrowDateUTC8();
             
             if (dateInput) {
                 // Set min attribute multiple ways to ensure it sticks
@@ -215,7 +209,7 @@ $(document).ready(function() {
         // Set min date on page load IMMEDIATELY (disable today)
         // This must run before any user interaction
         if (dateInput) {
-            const tomorrowStr = getTomorrowDate();
+            const tomorrowStr = getTomorrowDateUTC8();
             dateInput.setAttribute('min', tomorrowStr);
             dateInput.min = tomorrowStr;
         }
@@ -228,7 +222,7 @@ $(document).ready(function() {
             setMinDate(); // Update min date when field is focused
             // Also set it using native method
             if (dateInput) {
-                const tomorrowStr = getTomorrowDate();
+                const tomorrowStr = getTomorrowDateUTC8();
                 dateInput.setAttribute('min', tomorrowStr);
                 dateInput.min = tomorrowStr;
             }
@@ -238,7 +232,7 @@ $(document).ready(function() {
         $('#booking_date').on('click', function() {
             setMinDate();
             if (dateInput) {
-                const tomorrowStr = getTomorrowDate();
+                const tomorrowStr = getTomorrowDateUTC8();
                 dateInput.setAttribute('min', tomorrowStr);
                 dateInput.min = tomorrowStr;
             }
@@ -249,10 +243,9 @@ $(document).ready(function() {
             const selectedDate = $(this).val();
             if (selectedDate) {
                 // Validate immediately
-                const todayStr = getTodayDate();
-                const tomorrowStr = getTomorrowDate();
+                const tomorrowStr = getTomorrowDateUTC8();
                 
-                if (selectedDate === todayStr || selectedDate < tomorrowStr) {
+                if (selectedDate < tomorrowStr) {
                     e.preventDefault();
                     e.stopPropagation();
                     $(this).val('');
@@ -266,14 +259,9 @@ $(document).ready(function() {
         $('#booking_date').on('change', function(e) {
             const selectedDate = $(this).val();
             if (selectedDate) {
-                // Immediate validation with fresh date calculations
-                const today = new Date();
-                const tomorrow = new Date();
-                tomorrow.setDate(tomorrow.getDate() + 1);
-                const todayStr = today.toISOString().split('T')[0];
-                const tomorrowStr = tomorrow.toISOString().split('T')[0];
+                const tomorrowStr = getTomorrowDateUTC8();
                 
-                if (selectedDate === todayStr || selectedDate < tomorrowStr) {
+                if (selectedDate < tomorrowStr) {
                     e.preventDefault();
                     e.stopPropagation();
                     $(this).val('');
@@ -314,14 +302,9 @@ $(document).ready(function() {
             // Validate and clear if invalid
             const selectedDate = $('#booking_date').val();
             if (selectedDate) {
-                // Fresh date calculation
-                const today = new Date();
-                const tomorrow = new Date();
-                tomorrow.setDate(tomorrow.getDate() + 1);
-                const todayStr = today.toISOString().split('T')[0];
-                const tomorrowStr = tomorrow.toISOString().split('T')[0];
+                const tomorrowStr = getTomorrowDateUTC8();
                 
-                if (selectedDate === todayStr || selectedDate < tomorrowStr) {
+                if (selectedDate < tomorrowStr) {
                     $('#booking_date').val('');
                     if (dateInput) {
                         dateInput.value = '';
@@ -387,7 +370,7 @@ $(document).ready(function() {
             selectedTherapist = $(this).find(':selected').data('therapist');
             // Only load time slots if a valid date is selected
             const selectedDate = $('#booking_date').val();
-            const tomorrowStr = getTomorrowDate();
+            const tomorrowStr = getTomorrowDateUTC8();
             if (selectedDate && selectedDate >= tomorrowStr) {
                 loadAvailableTimeSlots();
             }
@@ -751,18 +734,12 @@ function createBooking() {
         return;
     }
     
-    // Calculate dates fresh to ensure accuracy
-    const now = new Date();
-    const today = new Date(now.getFullYear(), now.getMonth(), now.getDate());
-    const tomorrow = new Date(today);
-    tomorrow.setDate(tomorrow.getDate() + 1);
+    // Compare dates strictly in UTC+8
+    const UTC8_OFFSET_MS = 8 * 60 * 60 * 1000;
+    const ONE_DAY_MS = 24 * 60 * 60 * 1000;
+    const tomorrowStr = new Date(Date.now() + UTC8_OFFSET_MS + ONE_DAY_MS).toISOString().split('T')[0];
     
-    const selectedDateObj = new Date(selectedDate + 'T00:00:00');
-    const todayStr = today.toISOString().split('T')[0];
-    const tomorrowStr = tomorrow.toISOString().split('T')[0];
-    
-    // Compare dates strictly
-    if (selectedDate === todayStr || selectedDate < tomorrowStr || selectedDateObj <= today) {
+    if (selectedDate < tomorrowStr) {
         $('#errorMessage').removeClass('d-none').text('You cannot book for today. Please select a date starting from tomorrow.');
         $('#booking_date').val('');
         const dateInput = document.getElementById('booking_date');
@@ -773,17 +750,7 @@ function createBooking() {
         return;
     }
     
-    // Double check: ensure selected date is at least tomorrow
-    if (selectedDateObj.getTime() <= today.getTime()) {
-        $('#errorMessage').removeClass('d-none').text('You cannot book for today. Please select a date starting from tomorrow.');
-        $('#booking_date').val('');
-        const dateInput = document.getElementById('booking_date');
-        if (dateInput) {
-            dateInput.value = '';
-            dateInput.setAttribute('value', '');
-        }
-        return;
-    }
+    // (selectedDate < tomorrowStr already guarantees the selected date is at least tomorrow in UTC+8)
     
     if (!$('#booking_time').val()) {
         $('#errorMessage').removeClass('d-none').text('Please select a time');
@@ -802,15 +769,11 @@ function createBooking() {
     // Final check right before API call - ensure date is still valid
     const finalDateCheck = $('#booking_date').val();
     if (finalDateCheck) {
-        const now = new Date();
-        const today = new Date(now.getFullYear(), now.getMonth(), now.getDate());
-        const tomorrow = new Date(today);
-        tomorrow.setDate(tomorrow.getDate() + 1);
-        const todayStr = today.toISOString().split('T')[0];
-        const tomorrowStr = tomorrow.toISOString().split('T')[0];
-        const selectedDateObj = new Date(finalDateCheck + 'T00:00:00');
+        const UTC8_OFFSET_MS = 8 * 60 * 60 * 1000;
+        const ONE_DAY_MS = 24 * 60 * 60 * 1000;
+        const tomorrowStr = new Date(Date.now() + UTC8_OFFSET_MS + ONE_DAY_MS).toISOString().split('T')[0];
         
-        if (finalDateCheck === todayStr || finalDateCheck < tomorrowStr || selectedDateObj <= today) {
+        if (finalDateCheck < tomorrowStr) {
             $('#errorMessage').removeClass('d-none').text('You cannot book for today. Please select a date starting from tomorrow.');
             $('#booking_date').val('');
             const dateInput = document.getElementById('booking_date');
