@@ -436,10 +436,14 @@ function openBookingModal(service) {
     // Populate service info in modal
     // Use default image if no image is set
     let imageUrl;
-    if (service.image && service.image !== 'defaults/service-default.png' && service.image !== 'defaults/service-default.svg') {
+    // Check if service has a valid custom image
+    if (service.image && 
+        service.image !== 'defaults/service-default.png' && 
+        service.image !== 'defaults/service-default.svg' &&
+        service.image.trim() !== '') {
         imageUrl = `${API_BASE_URL}/storage/${service.image}`;
     } else {
-        // Try PNG first, fallback to SVG
+        // Use default image
         imageUrl = `${API_BASE_URL}/storage/defaults/service-default.png`;
     }
 
@@ -573,10 +577,14 @@ function filterAndDisplayServices() {
     filteredServices.forEach(service => {
         // Use default image if no image is set
         let imageUrl;
-        if (service.image && service.image !== 'defaults/service-default.png' && service.image !== 'defaults/service-default.svg') {
+        // Check if service has a valid custom image
+        if (service.image && 
+            service.image !== 'defaults/service-default.png' && 
+            service.image !== 'defaults/service-default.svg' &&
+            service.image.trim() !== '') {
             imageUrl = `${API_BASE_URL}/storage/${service.image}`;
         } else {
-            // Try PNG first, fallback to SVG
+            // Use default image
             imageUrl = `${API_BASE_URL}/storage/defaults/service-default.png`;
         }
         
