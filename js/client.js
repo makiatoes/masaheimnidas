@@ -11,6 +11,7 @@ $(document).ready(function() {
             return;
         }
 
+        
         const fullName = (user.firstname || '') + ' ' + (user.lastname || '');
         $('#userFullName').text(fullName.trim() || user.username);
         $('#navUserName').text(user.username);
